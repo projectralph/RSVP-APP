@@ -20,6 +20,7 @@ async function list(req, res) {
 }
 
 async function create(req, res, next) {
+  console.log("body data is ", req.body.data);
   const data = await service.create(req.body.data);
   res.status(201).json({ data });
 }
@@ -65,8 +66,8 @@ const hasRequiredProperties = hasProperties(properties);
 // function to validate the format of the date
 function validDate(req, res, next) {
   const date = req.body.data.reservation_date;
-  const validDate = /\d{4}-\d{2}-\d{2}/.test(date);
-  if (!date || !validDate) {
+  // const validDate = /\d{4}-\d{2}-\d{2}/.test(date);
+  if (!date.match(/\d{4}-\d{2}-\d{2}/)) {
     next({
       status: 400,
       message: "reservation_date is not valid",
@@ -78,8 +79,8 @@ function validDate(req, res, next) {
 // function to validate the format of the time
 function validTime(req, res, next) {
   const time = req.body.data.reservation_time;
-  const validTime = /[0-9]{2}:[0-9]{2}/.test(time);
-  if (!time || !validTime) {
+  // const validTime = /[0-9]{2}:[0-9]{2}/.test(time);
+  if (!time.match(/\d{2}:\d{2}/)) {
     next({
       status: 400,
       message: "reservation_time is not valid",
